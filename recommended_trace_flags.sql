@@ -48,6 +48,8 @@ BEGIN
 	UNION ALL
 	SELECT
 		7412
+	WHERE
+		@sql_version IN (13, 14)
 	UNION ALL
 	SELECT
 		7745;
@@ -62,5 +64,6 @@ BEGIN
 		N'-T' + STRING_AGG(tf, N' -T') AS startup_parameters
 	FROM
 		#trace_flags;
+
 END
 
