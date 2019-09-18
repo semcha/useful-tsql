@@ -21,8 +21,7 @@ DECLARE @min_rows_file_size_mb int = 1024
                 [file_id] = 1
         );
 
-WITH max_size_file
-AS
+WITH max_size_file AS
 (
     SELECT
         IIF(

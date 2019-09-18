@@ -30,13 +30,14 @@ BEGIN
     DROP TABLE IF EXISTS #trace_flags;
 
     SELECT
-        460 AS tf INTO #trace_flags
+        460 AS tf
+    INTO #trace_flags
     WHERE
         (@sql_version = 13
-        AND @product_level >= N'SP2'
-        AND @product_update_level >= N'CU6')
+            AND @product_level >= N'SP2'
+            AND @product_update_level >= N'CU6')
         OR (@sql_version = 14
-        AND @product_update_level >= N'CU14')
+            AND @product_update_level >= N'CU14')
     UNION ALL
     SELECT
         3226
