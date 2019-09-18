@@ -1,4 +1,4 @@
-USE master;
+USE [master];
 GO
 
 -- https://www.sqlskills.com/blogs/erin/query-store-settings/

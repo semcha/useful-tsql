@@ -1,4 +1,4 @@
-USE master;
+USE [master];
 GO
 
 -- https://blog.pythian.com/sql-server-default-configurations-change/
