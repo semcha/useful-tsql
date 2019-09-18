@@ -10,8 +10,8 @@ FROM
 
 -- Modify / Add files
 DECLARE @min_rows_file_size_mb int = 1024
-	   ,@rows_file_size_mb int = 512
-	   ,@logs_file_size_mb int = 256
+	   ,@rows_autogrowth_size_mb int = 512
+	   ,@logs_autogrowth_size_mb int = 256
 	   ,@tempdb_file_path nvarchar(250) = (
 			SELECT
 				REPLACE(physical_name, N'tempdb.mdf', N'')
@@ -38,9 +38,9 @@ AS
 )
 SELECT
 	N'ALTER DATABASE [' + DB_NAME() + N'] '
-	+ N'MODIFY FILE ( NAME = N''' + [name] + N''', '
+	+ N'MODIFY FILE ( NAME = N''' + dbfl.[name] + N''', '
 	+ N'SIZE = ' + CAST(ms.rows_max_size_mb AS nvarchar(50)) + N'MB, '
-	+ N'FILEGROWTH = ' + CAST(@rows_file_size_mb AS nvarchar(50)) + N'MB );'
+	+ N'FILEGROWTH = ' + CAST(@rows_autogrowth_size_mb AS nvarchar(50)) + N'MB );'
 	AS alter_database_files_sql
 FROM
 	sys.database_files AS dbfl
@@ -56,7 +56,7 @@ UNION ALL
 SELECT
 	N'ALTER DATABASE [' + DB_NAME() + N'] '
 	+ N'MODIFY FILE ( NAME = N''' + [name] + N''', '
-	+ N'FILEGROWTH = ' + CAST(@logs_file_size_mb AS nvarchar(50)) + N'MB );' AS alter_sql
+	+ N'FILEGROWTH = ' + CAST(@logs_autogrowth_size_mb AS nvarchar(50)) + N'MB );' AS alter_sql
 FROM
 	sys.database_files
 WHERE
@@ -66,7 +66,7 @@ SELECT
 	N'ALTER DATABASE [' + DB_NAME() + N'] ADD FILE ( NAME = N''temp' + CAST(q.rownum AS nvarchar(50)) + N''', '
 	+ N'FILENAME = N''' + @tempdb_file_path + N'tempdb_mssql_' + CAST(q.rownum AS nvarchar(50)) + '.ndf''' + N', '
 	+ N'SIZE = ' + CAST(ms.rows_max_size_mb AS nvarchar(50)) + N'MB, '
-	+ N'FILEGROWTH = ' + CAST(@rows_file_size_mb AS nvarchar(50)) + N'MB );'
+	+ N'FILEGROWTH = ' + CAST(@rows_autogrowth_size_mb AS nvarchar(50)) + N'MB );'
 FROM
 	(
 		SELECT
