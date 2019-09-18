@@ -13,28 +13,28 @@ GO
 -- https://www.sqlskills.com/blogs/jonathan/how-much-memory-does-my-sql-server-actually-need/
 -- https://bornsql.ca/s/memory/
 DECLARE @max_server_memory_mb int = (
-	SELECT
-		CAST(
-		qry.memory_mb
-		- 1024
-		- (1024 * IIF(qry.memory_mb >= 16384, 16384, qry.memory_mb) / 4096.)
-		- (1024 * IIF(qry.memory_mb <= 16384, 0, qry.memory_mb - 16384) / 8192.)
-		AS int) / 1024 * 1024
-	FROM
-		(
-			SELECT
-				(total_physical_memory_kb / 1024.) AS memory_mb
-			FROM
-				sys.dm_os_sys_memory
-		) AS qry
+    SELECT
+        CAST(
+        qry.memory_mb
+        - 1024
+        - (1024 * IIF(qry.memory_mb >= 16384, 16384, qry.memory_mb) / 4096.)
+        - (1024 * IIF(qry.memory_mb <= 16384, 0, qry.memory_mb - 16384) / 8192.)
+        AS int) / 1024 * 1024
+    FROM
+        (
+            SELECT
+                (total_physical_memory_kb / 1024.) AS memory_mb
+            FROM
+                sys.dm_os_sys_memory
+        ) AS qry
 );
 
 -- https://support.microsoft.com/en-gb/help/2806535/
 DECLARE @cpu_maxdop int = (
-	SELECT
-		IIF(cpu_count < 8, cpu_count, 8) AS cpu_maxdop
-	FROM
-		sys.dm_os_sys_info
+    SELECT
+        IIF(cpu_count < 8, cpu_count, 8) AS cpu_maxdop
+    FROM
+        sys.dm_os_sys_info
 );
 
 -- Ad Hoc Settings

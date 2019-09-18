@@ -3,12 +3,12 @@ GO
 
 -- https://www.sqlskills.com/blogs/erin/query-store-settings/
 SELECT
-	q.database_settings_sql
+    q.database_settings_sql
 FROM
-	sys.databases AS db
-	CROSS APPLY (
-		SELECT
-			REPLACE(N'
+    sys.databases AS db
+    CROSS APPLY (
+        SELECT
+            REPLACE(N'
 	USE [@DATABASE_NAME];
 	GO
 	ALTER AUTHORIZATION ON DATABASE::[@DATABASE_NAME] TO [sa];
@@ -33,21 +33,21 @@ FROM
 	GO
 	ALTER DATABASE [@DATABASE_NAME] SET QUERY_STORE = ON;
 	GO'
-			, N'@DATABASE_NAME'
-			, db.[name]) AS database_settings_sql
-	) AS q
+            , N'@DATABASE_NAME'
+            , db.[name]) AS database_settings_sql
+    ) AS q
 WHERE
-	db.database_id > 4
+    db.database_id > 4
 UNION ALL
 SELECT
-	REPLACE(N'
+    REPLACE(N'
 	ALTER DATABASE [@DATABASE_NAME] SET COMPATIBILITY_LEVEL = 150;
 	ALTER DATABASE [@DATABASE_NAME] VERBOSE_TRUNCATION_WARNINGS = ON;
 	ALTER DATABASE [@DATABASE_NAME] LIGHTWEIGHT_QUERY_PROFILING = ON;'
-	, N'@DATABASE_NAME'
-	, db.[name])
+    , N'@DATABASE_NAME'
+    , db.[name])
 FROM
-	sys.databases AS db
+    sys.databases AS db
 WHERE
-	db.database_id > 4
-	AND CAST(SERVERPROPERTY('ProductMajorVersion') AS int) = 15; -- 2019
+    db.database_id > 4
+    AND CAST(SERVERPROPERTY('ProductMajorVersion') AS int) = 15; -- 2019
