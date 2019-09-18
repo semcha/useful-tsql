@@ -1,3 +1,6 @@
+USE master;
+GO
+
 -- https://www.sqlskills.com/blogs/erin/query-store-settings/
 SELECT
 	q.database_settings_sql
