@@ -29,6 +29,14 @@ DECLARE @max_server_memory_mb int = (
 		) AS qry
 );
 
+-- https://support.microsoft.com/en-gb/help/2806535/
+DECLARE @cpu_maxdop int = (
+	SELECT
+		IIF(cpu_count < 8, cpu_count, 8) AS cpu_maxdop
+	FROM
+		sys.dm_os_sys_info
+);
+
 -- Ad Hoc Settings
 EXEC sys.sp_configure N'optimize for ad hoc workloads', 1
 EXEC sys.sp_configure N'Ad Hoc Distributed Queries', 1;
@@ -44,8 +52,8 @@ EXEC sys.sp_configure N'backup checksum default', 1;
 EXEC sys.sp_configure N'fill factor (%)', 90;
 
 -- Parallelism
-EXEC sys.sp_configure N'cost threshold for parallelism', 50
-EXEC sys.sp_configure N'max degree of parallelism', 4
+EXEC sys.sp_configure N'cost threshold for parallelism', 50;
+EXEC sys.sp_configure N'max degree of parallelism', @cpu_maxdop;
 
 -- High Performance Power Option
 -- http://desertdba.com/find-and-fix-that-troublesome-windows-power-setting/
