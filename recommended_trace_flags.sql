@@ -58,7 +58,7 @@ BEGIN
     SELECT
         N'DBCC TRACEON (' + CAST(tf AS nvarchar(10)) + N');' AS session_enable
        ,N'DBCC TRACEON (' + CAST(tf AS nvarchar(10)) + N', -1);' AS global_enable
-	   ,N'-T' + CAST(tf AS nvarchar(10)) AS startup_parameter
+       ,N'-T' + CAST(tf AS nvarchar(10)) AS startup_parameter
     FROM
         #trace_flags;
 
