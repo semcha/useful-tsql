@@ -1,0 +1,17 @@
+ALTER DATABASE []
+SET MEMORY_OPTIMIZED_ELEVATE_TO_SNAPSHOT = ON;
+GO
+
+DROP TABLE IF EXISTS dbo.ShoppingCart;
+GO
+CREATE TABLE dbo.ShoppingCart (
+    ShoppingCartId int IDENTITY (1, 1)
+   ,UserId int NOT NULL
+   ,CreatedDate datetime2 NOT NULL
+   ,TotalPrice money
+   ,CONSTRAINT pk_ShoppingCart PRIMARY KEY NONCLUSTERED (ShoppingCartId)
+   ,INDEX hash_UserId NONCLUSTERED HASH (UserId) WITH (BUCKET_COUNT = 262144)
+   ,INDEX ix_UserId_CreatedDate NONCLUSTERED (UserId, CreatedDate)
+   ,INDEX ccix_ShoppingCart CLUSTERED COLUMNSTORE
+) WITH (MEMORY_OPTIMIZED = ON, DURABILITY = SCHEMA_AND_DATA);
+GO
