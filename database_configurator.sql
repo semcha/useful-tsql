@@ -3,6 +3,7 @@ GO
 
 -- https://www.sqlskills.com/blogs/erin/query-store-settings/
 SELECT
+    db.[name] as [database_name],
     q.database_settings_sql
 FROM
     sys.databases AS db
@@ -40,6 +41,7 @@ WHERE
     db.database_id > 4
 UNION ALL
 SELECT
+    db.[name] as [database_name],
     REPLACE(N'
     ALTER DATABASE [@DATABASE_NAME] SET COMPATIBILITY_LEVEL = 150;
     ALTER DATABASE SCOPED CONFIGURATION SET VERBOSE_TRUNCATION_WARNINGS = ON;
@@ -51,4 +53,5 @@ FROM
     sys.databases AS db
 WHERE
     db.database_id > 4
-    AND CAST(SERVERPROPERTY('ProductMajorVersion') AS int) = 15; -- 2019
+    AND CAST(SERVERPROPERTY('ProductMajorVersion') AS int) = 15 -- 2019
+ORDER BY [database_name]; 
