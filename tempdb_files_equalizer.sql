@@ -85,4 +85,4 @@ FROM
             max_size_file
     ) AS ms
 WHERE
-    q.rownum BETWEEN ms.rows_file_count + 1 AND 8;
+    q.rownum BETWEEN ms.rows_file_count + 1 AND 6;

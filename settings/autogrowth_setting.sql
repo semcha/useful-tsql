@@ -4,6 +4,7 @@ GO
 
 DECLARE @rows_autogrowth_size_mb int = 512
        ,@logs_autogrowth_size_mb int = 256;
+
 SELECT
     DB_NAME(database_id) as [database_name],
     [name] as [file_name],

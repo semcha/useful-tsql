@@ -53,5 +53,5 @@ FROM
     sys.databases AS db
 WHERE
     db.database_id > 4
-    AND CAST(SERVERPROPERTY('ProductMajorVersion') AS int) = 15 -- 2019
+    AND CAST(SERVERPROPERTY('ProductMajorVersion') AS int) >= 15 -- 2019+
 ORDER BY [database_name]; 
