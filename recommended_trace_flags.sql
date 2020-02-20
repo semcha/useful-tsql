@@ -27,7 +27,9 @@ IF @sql_version = 13
 ELSE
 IF @sql_version BETWEEN 13 AND 15
 BEGIN
-    DROP TABLE IF EXISTS #trace_flags;
+    
+	IF (OBJECT_ID(N'tepmdb..#trace_flags') IS NOT NULL)
+		DROP TABLE #trace_flags;
 
     SELECT
         460 AS tf
