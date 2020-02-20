@@ -2,12 +2,6 @@
 USE tempdb;
 GO
 
--- Shrink
-SELECT
-    N'DBCC SHRINKFILE (N''' + [name] + ''' , 1);' AS shrink_sql
-FROM
-    sys.database_files;
-
 -- Modify / Add files
 DECLARE @min_rows_file_size_mb int = 1024
        ,@rows_autogrowth_size_mb int = 512
@@ -19,7 +13,8 @@ DECLARE @min_rows_file_size_mb int = 1024
                 sys.database_files
             WHERE
                 [file_id] = 1
-        );
+        )
+		,@number_of_files int = 8;
 
 WITH max_size_file AS
 (
@@ -85,4 +80,4 @@ FROM
             max_size_file
     ) AS ms
 WHERE
-    q.rownum BETWEEN ms.rows_file_count + 1 AND 6;
+    q.rownum BETWEEN ms.rows_file_count + 1 AND @number_of_files;
