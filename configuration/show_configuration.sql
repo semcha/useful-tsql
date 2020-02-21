@@ -5,6 +5,7 @@ SELECT
    ,[compatibility_level]
    ,is_read_committed_snapshot_on
    ,is_parameterization_forced
+   ,delayed_durability_desc
 FROM sys.databases;
 
 
