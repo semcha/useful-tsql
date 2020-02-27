@@ -41,7 +41,7 @@ SELECT
 	,CAST(event_data AS XML) as event_data
 INTO #event_data
 FROM
-	sys.fn_xe_file_target_read_file('E:\ExtendedEvents\Queries_*.xel', null, null, null)
+	sys.fn_xe_file_target_read_file('E:\ExtendedEvents\QueryMetrics_*.xel', null, null, null)
 WHERE
 	[object_name] != N'existing_connection';
 
