@@ -4,12 +4,12 @@ USE [master];
 SELECT
 	REPLACE(REPLACE(
 	N'
-	USE @DATABASE_NAME;
+	USE [${DATABASE_NAME}];
 	GO
-	DBCC SHRINKFILE (N''@FILE_NAME'', 1);
+	DBCC SHRINKFILE (N''${FILE_NAME}'', 1);
 	GO'
-	, N'@DATABASE_NAME', db.[name])
-	, N'@FILE_NAME', dbfl.[name])
+	, N'${DATABASE_NAME}', db.[name])
+	, N'${FILE_NAME}', dbfl.[name])
 	, dbfl.[type_desc]
 FROM sys.databases AS db
 INNER JOIN sys.master_files AS dbfl
@@ -21,12 +21,12 @@ ORDER BY dbfl.[type_desc], db.[name];
 SELECT
 	REPLACE(REPLACE(
 	N'
-	USE @DATABASE_NAME;
+	USE [${DATABASE_NAME}];
 	GO
-	DBCC SHRINKFILE (N''@FILE_NAME'', 1);
+	DBCC SHRINKFILE (N''${FILE_NAME}'', 1);
 	GO'
-	, N'@DATABASE_NAME', db.[name])
-	, N'@FILE_NAME', dbfl.[name])
+	, N'${DATABASE_NAME}', db.[name])
+	, N'${FILE_NAME}', dbfl.[name])
 	, dbfl.[type_desc]
 FROM sys.databases AS db
 INNER JOIN sys.master_files AS dbfl
