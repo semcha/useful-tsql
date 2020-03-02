@@ -1,5 +1,5 @@
 IF OBJECT_ID(N'tempdb..##disabled_indexes_01') IS NOT NULL
-	DROP TABLE IF EXISTS ##disabled_indexes_01;
+	DROP TABLE ##disabled_indexes_01;
 CREATE TABLE ##disabled_indexes_01 (
 	[database_name] nvarchar(255)
 	,drop_sql nvarchar(1000)
