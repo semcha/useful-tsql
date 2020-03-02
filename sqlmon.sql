@@ -1,4 +1,4 @@
--- Монторинг выполняемых запросов
+-- Monitoring running queries
 SELECT
     es.session_id AS [sid]
    ,er.blocking_session_id AS bloc_sid
