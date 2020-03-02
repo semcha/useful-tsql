@@ -1,8 +1,8 @@
 IF OBJECT_ID(N'tempdb..##disabled_indexes_01') IS NOT NULL
-	DROP TABLE ##disabled_indexes_01;
+    DROP TABLE ##disabled_indexes_01;
 CREATE TABLE ##disabled_indexes_01 (
-	[database_name] nvarchar(255)
-	,drop_sql nvarchar(1000)
+    [database_name] NVARCHAR(255)
+   ,drop_sql NVARCHAR(1000)
 );
 
 EXECUTE sp_MSforeachdb N'USE [?]
@@ -18,6 +18,6 @@ EXECUTE sp_MSforeachdb N'USE [?]
 ';
 
 SELECT
-	*
+    *
 FROM
-	##disabled_indexes_01;
+    ##disabled_indexes_01;
