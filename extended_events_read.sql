@@ -31,7 +31,6 @@ GO
 
 IF OBJECT_ID('tempdb..#event_data') IS NOT NULL
 	DROP TABLE #event_data;
-
 SELECT
 	HASHBYTES('SHA2_256'
 		,[file_name]
@@ -76,7 +75,7 @@ SELECT
 		, n.value('(data[@name="batch_text"]/value)[1]', 'nvarchar(max)')
 	) as sql_statement,
 	n.value('(action[@name="sql_text"]/value)[1]', 'nvarchar(max)') as sql_text,
-	n.value('(action[@name="object_name"]/value)[1]', 'nvarchar(255)') as [object_name],
+	n.value('(data[@name="object_name"]/value)[1]', 'nvarchar(255)') as [object_name],
 	n.value('(data[@name="row_count"]/value)[1]', 'bigint') as row_count,
 	n.value('(data[@name="cpu_time"]/value)[1]', 'bigint') as cpu,
 	n.value('(data[@name="physical_reads"]/value)[1]', 'bigint') as physical_reads,

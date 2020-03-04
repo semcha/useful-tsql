@@ -3,14 +3,14 @@ SELECT
     es.session_id AS [sid]
    ,er.blocking_session_id AS bloc_sid
    ,CAST(er.total_elapsed_time / 1000. / 60. AS DECIMAL(34, 2)) AS [duration]
-   ,DB_NAME(er.database_id) AS [db_name]
    ,SUBSTRING(qt.[text], (er.statement_start_offset / 2) + 1,
     ((CASE
         WHEN er.statement_end_offset = -1 THEN LEN(CONVERT(NVARCHAR(MAX), qt.[text])) * 2
         ELSE er.statement_end_offset
     END - er.statement_start_offset) / 2) + 1) AS [statement]
    ,qt.[text] AS query
-   ,qt.objectid
+   ,DB_NAME(er.database_id) AS [db_name]
+   ,OBJECT_SCHEMA_NAME(qt.objectid, er.database_id) + N'.' + OBJECT_NAME(qt.objectid, er.database_id) AS [object_name]
    ,er.[status]
    ,er.command
    ,es.login_name
