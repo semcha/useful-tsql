@@ -1,5 +1,7 @@
 /*
-CREATE TABLE [dbo].[tracked_queries](
+
+-- Create table in msdb database
+CREATE TABLE msdb.dbo.tracked_queries (
 	[timestamp] [datetime2](3) NULL,
 	[duration] [decimal](19, 1) NULL,
 	[event_name] [nvarchar](255) NULL,
@@ -21,7 +23,7 @@ CREATE TABLE [dbo].[tracked_queries](
 	[row_hash] [binary](32) NULL
 );
 GO
-CREATE UNIQUE CLUSTERED INDEX [CIX_row_hash] ON [dbo].[tracked_queries]
+CREATE UNIQUE CLUSTERED INDEX [CIX_row_hash] ON msdb.dbo.tracked_queries
 (
 	[row_hash] ASC
 );
