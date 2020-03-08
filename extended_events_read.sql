@@ -35,11 +35,11 @@ IF OBJECT_ID('tempdb..#event_data') IS NOT NULL
     DROP TABLE #event_data;
 SELECT
     HASHBYTES('SHA2_256'
-        ,[file_name]
-        + N':offset_' + CAST(file_offset AS NVARCHAR(20))
-        + N':data_' + CAST(event_data AS NVARCHAR(4000))
-    ) AS row_hash
-   ,CAST(event_data AS XML) AS event_data
+    , CAST([file_name]
+    + ':offset_' + CAST(file_offset AS varchar(20))
+    + ':data_' + CAST(event_data AS varchar(8000))
+    AS varchar(8000))) AS row_hash
+   ,CAST(event_data AS xml) AS event_data
 INTO #event_data
 FROM
     sys.fn_xe_file_target_read_file('E:\ExtendedEvents\QueryMetrics_*.xel', NULL, NULL, NULL)
@@ -69,12 +69,12 @@ INSERT INTO msdb.dbo.tracked_queries WITH (TABLOCK) (
 )
 SELECT
     DATEADD(HOUR, 3, n.value('(@timestamp)[1]', 'datetime2(3)')) AS [timestamp]
-   ,CAST(n.value('(data[@name="duration"]/value)[1]', 'bigint') / 60000000. AS DECIMAL(19, 1)) AS duration
+   ,CAST(n.value('(data[@name="duration"]/value)[1]', 'bigint') / 60000000. AS decimal(19, 1)) AS duration
    ,n.value('(@name)[1]', 'nvarchar(255)') AS event_name
    ,n.value('(action[@name="database_name"]/value)[1]', 'nvarchar(255)') AS [database_name]
    ,COALESCE(
-        n.value('(data[@name="statement"]/value)[1]', 'nvarchar(max)')
-        ,n.value('(data[@name="batch_text"]/value)[1]', 'nvarchar(max)')
+    n.value('(data[@name="statement"]/value)[1]', 'nvarchar(max)')
+    , n.value('(data[@name="batch_text"]/value)[1]', 'nvarchar(max)')
     ) AS sql_statement
    ,n.value('(action[@name="sql_text"]/value)[1]', 'nvarchar(max)') AS sql_text
    ,n.value('(data[@name="object_name"]/value)[1]', 'nvarchar(255)') AS [object_name]
