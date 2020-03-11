@@ -19,7 +19,7 @@ ADD EVENT sqlserver.sql_batch_completed(
 ADD EVENT sqlserver.sql_statement_completed(SET collect_statement=(1)
     ACTION(sqlserver.query_hash,sqlserver.sql_text,sqlserver.client_hostname,sqlserver.client_app_name,sqlserver.database_name,sqlserver.nt_username,sqlserver.username,sqlserver.server_principal_name)
     WHERE ([duration]>=(10000000) AND ([package0].[greater_than_uint64]([sqlserver].[database_id],(4))) AND ([sqlserver].[is_system]=(0))))
-ADD TARGET package0.event_file(SET filename=N'E:\ExtendedEvents\QueryMetrics.xel',max_file_size=(128),max_rollover_files=(20))
+ADD TARGET package0.event_file(SET filename=N'E:\ExtendedEvents\QueryMetrics.xel',max_file_size=(128),max_rollover_files=(50))
 WITH (STARTUP_STATE = ON);
 GO
 
