@@ -1,14 +1,14 @@
 DECLARE @login_name nvarchar(255) = N'';
 
-IF OBJECT_ID(N'tempdb..##drop_login_042') IS NOT NULL
-    DROP TABLE ##drop_login_042;
-CREATE TABLE ##drop_login_042 (
+IF OBJECT_ID(N'tempdb..##drop_logouser_042') IS NOT NULL
+    DROP TABLE ##drop_logouser_042;
+CREATE TABLE ##drop_logouser_042 (
     [name] nvarchar(255)
    ,[sid] varbinary(85)
    ,[drop_sql] nvarchar(4000)
-)
+);
 
-INSERT INTO ##drop_login_042 (
+INSERT INTO ##drop_logouser_042 (
     [name]
    ,[sid]
    ,drop_sql
@@ -20,29 +20,29 @@ SELECT
 FROM
     sys.server_principals AS sp
 WHERE
-    sp.[type] = N'U'
+    sp.[type] IN (N'S', N'U') -- SQL Login, Windows Login
     AND sp.[name] = @login_name
-ORDER BY sp.[name]
+ORDER BY sp.[name];
 
 DECLARE @SQL nvarchar(max) = N'
     USE ?
-    INSERT INTO ##drop_login_042 (
-        [name]
-       ,[sid]
-       ,drop_sql
+    INSERT INTO ##drop_logouser_042 (
+        usr.[name]
+       ,usr.[sid]
+       ,usr.drop_sql
     )
     SELECT
-        [name]
-        ,[sid]
-        ,N''USE '' + DB_NAME() + N''; DROP USER ['' + [name] + N''];'' AS drop_sql
+        usr.[name]
+        ,usr.[sid]
+        ,N''USE ['' + DB_NAME() + N'']; DROP USER ['' + usr.[name] + N''];'' AS drop_sql
     FROM
         sys.sysusers AS usr
     WHERE
-        sid IN (SELECT sid FROM ##drop_login_042);'
+        usr.sid IN (SELECT sid FROM ##drop_logouser_042);';
 
 EXECUTE sp_MSforeachdb @SQL;
 
 SELECT
     *
 FROM
-    ##drop_login_042;
+    ##drop_logouser_042;
